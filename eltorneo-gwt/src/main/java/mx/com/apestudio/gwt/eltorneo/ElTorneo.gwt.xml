@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 2.4.0//EN" "http://google-web-toolkit.googlecode.com/svn/tags/2.4.0/distro-source/core/src/gwt-module.dtd">
+<module rename-to="eltorneo">
+	<inherits name="com.google.gwt.user.User" />
+	<inherits name="com.smartgwt.SmartGwt" />
+	<source path="client" />
+	<!-- 	Para acelerar el proceso de compilacion durante el desarrollo. -->
+	<set-property name="user.agent" value="safari" />
+	<set-property name="locale" value="default" />
+	<stylesheet src="css/eltorneo.css"/>
+	<script src="js/jquery.js" />
+	<entry-point
+		class="mx.com.apestudio.gwt.eltorneo.client.ElTorneoEntryPoint" />
+</module>

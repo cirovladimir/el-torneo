@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Formulario Registro Equipo</title>
+</head>
+<body>
+	<form>
+		<label>Logo:</label>
+		<input type="file" name="logo">
+		 
+		<label>Nombre:</label>
+		<input type="text" name="nombre">
+		 
+		<input type="submit">
+	</form>
+	
+	<!-- 	Include scripts -->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			$('form').submit(function(e){
+				var data = new FormData();
+				data.append('logo', $('form [name = logo]')[0].files[0]);
+				data.append('nombre', $('form [name = nombre]').val())
+				$.ajax({
+					url: 'api/rest/equipos',
+					data: data,
+					processData: false,
+					contentType: false,
+					type: 'POST',
+					success: function(response){
+						alert(response);
+					}
+				});
+				e.preventDefault();
+			});
+		});
+	</script>
+</body>
+</html>
