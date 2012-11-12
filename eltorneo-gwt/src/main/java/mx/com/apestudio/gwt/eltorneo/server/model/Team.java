@@ -1,16 +1,16 @@
-package mx.com.apestudio.gwt.eltorneo.server.modelo;
+package mx.com.apestudio.gwt.eltorneo.server.model;
 
 import javax.persistence.Id;
 
 import com.google.appengine.api.datastore.Blob;
 
-public class Equipo {
+public class Team {
 
 	@Id Long id;
-	String nombre;
+	String name;
 	Blob logo;
 	
-	public Equipo() {
+	public Team() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -18,12 +18,12 @@ public class Equipo {
 		return id;
 	}
 
-	public String getNombre() {
-		return nombre;
+	public String getName() {
+		return name;
 	}
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+	public void setName(String nombre) {
+		this.name = nombre;
 	}
 
 	public Blob getLogo() {

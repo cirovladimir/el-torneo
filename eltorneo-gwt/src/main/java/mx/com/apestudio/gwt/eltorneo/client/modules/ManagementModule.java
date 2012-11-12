@@ -1,4 +1,4 @@
-package mx.com.apestudio.gwt.eltorneo.client.modulos;
+package mx.com.apestudio.gwt.eltorneo.client.modules;
 
 import mx.com.apestudio.gwt.eltorneo.client.events.OpenModuleRequestedEvent;
 import mx.com.apestudio.gwt.eltorneo.client.events.OpenModuleRequestedHandler;
@@ -22,14 +22,14 @@ import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.tab.TabSet;
 
-public class ModuloAdministracion extends VLayout implements ClickHandler,
+public class ManagementModule extends VLayout implements ClickHandler,
 		RecordClickHandler, OpenModuleRequestedHandler {
 
-	private ListGrid grdModulosAdmon;
+	private ListGrid grdModules;
 	private EventBus eventBus;
-	private TabSet modulosTabSet;
+	private TabSet modulesTabSet;
 
-	public ModuloAdministracion(EventBus eventBus) {
+	public ManagementModule(EventBus eventBus) {
 		this.eventBus = eventBus;
 		eventBus.addHandler(OpenModuleRequestedEvent.TYPE, this);
 		setSize("100%", "100%");
@@ -44,40 +44,40 @@ public class ModuloAdministracion extends VLayout implements ClickHandler,
 		Tab torneoTab = new Tab("Torneo");
 		SectionStack leftStack = new SectionStack();
 		SectionStackSection admonStackSection = new SectionStackSection(
-				"Administración");
-		grdModulosAdmon = new ListGrid();
-		grdModulosAdmon.setAutoFetchData(true);
-		grdModulosAdmon.setDataSource(new RestDataSource() {
+				"Management");
+		grdModules = new ListGrid();
+		grdModules.setAutoFetchData(true);
+		grdModules.setDataSource(new RestDataSource() {
 			{
-				setDataURL("api/rest/modulos");
+				setDataURL("api/rest/modules");
 				setDataFormat(DSDataFormat.JSON);
 
 				DataSourceField fldId = new DataSourceField("id",
 						FieldType.INTEGER);
 				fldId.setPrimaryKey(true);
 				fldId.setHidden(true);
-				DataSourceField fldNombre = new DataSourceField("nombre",
-						FieldType.TEXT, "Modulo");
+				DataSourceField fldNombre = new DataSourceField("name",
+						FieldType.TEXT, "Module");
 
 				setFields(fldId, fldNombre);
 			}
 		});
-		grdModulosAdmon.addClickHandler(this);
-		grdModulosAdmon.addRecordClickHandler(this);
-		admonStackSection.setItems(grdModulosAdmon);
+		grdModules.addClickHandler(this);
+		grdModules.addRecordClickHandler(this);
+		admonStackSection.setItems(grdModules);
 		leftStack.addSection(admonStackSection);
 		torneoTab.setPane(leftStack);
 		torneoTabSet.addTab(torneoTab);
 		leftPanel.setMembers(torneoTabSet);
-		modulosTabSet = new TabSet();
-		container.setMembers(leftPanel, modulosTabSet);
+		modulesTabSet = new TabSet();
+		container.setMembers(leftPanel, modulesTabSet);
 		setMembers(header, container);
 	}
 
 	@Override
 	public void onClick(ClickEvent event) {
 		Widget source = (Widget) event.getSource();
-		if (grdModulosAdmon == source) {
+		if (grdModules == source) {
 
 		}
 	}
@@ -85,27 +85,27 @@ public class ModuloAdministracion extends VLayout implements ClickHandler,
 	@Override
 	public void onRecordClick(RecordClickEvent event) {
 		Widget source = (Widget) event.getSource();
-		if(grdModulosAdmon == source){
-			String modulo = event.getRecord().getAttribute("nombre");
-			eventBus.fireEvent(new OpenModuleRequestedEvent(modulo));
+		if(grdModules == source){
+			String module = event.getRecord().getAttribute("name");
+			eventBus.fireEvent(new OpenModuleRequestedEvent(module));
 		}
 	}
 
 	@Override
 	public void onModuleRequested(OpenModuleRequestedEvent event) {
-		Canvas modulo;
-		Tab tab = modulosTabSet.getTab(event.getModuleName());
+		Canvas module;
+		Tab tab = modulesTabSet.getTab(event.getModuleName());
 		if(tab != null){
-			modulosTabSet.selectTab(tab);
+			modulesTabSet.selectTab(tab);
 			return;
 		}
-		if("RegistroEquipo".equals(event.getModuleName())){
-			modulo = new ModuloRegistroEquipo();
+		if("Team Registration".equals(event.getModuleName())){
+			module = new TeamRegistrationModule();
 			tab = new Tab(event.getModuleName());
-			tab.setPane(modulo);
+			tab.setPane(module);
 		}
 		if(tab != null){
-			modulosTabSet.addTab(tab);
+			modulesTabSet.addTab(tab);
 		}
 	}
 }

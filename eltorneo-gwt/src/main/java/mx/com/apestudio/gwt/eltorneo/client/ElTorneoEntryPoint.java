@@ -1,6 +1,6 @@
 package mx.com.apestudio.gwt.eltorneo.client;
 
-import mx.com.apestudio.gwt.eltorneo.client.modulos.ModuloAdministracion;
+import mx.com.apestudio.gwt.eltorneo.client.modules.ManagementModule;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.web.bindery.event.shared.EventBus;
@@ -12,7 +12,7 @@ public class ElTorneoEntryPoint implements EntryPoint {
 	@Override
 	public void onModuleLoad() {
 		eventBus = new SimpleEventBus();
-		ModuloAdministracion admon = new ModuloAdministracion(eventBus);
+		ManagementModule admon = new ManagementModule(eventBus);
 		admon.draw();
 	}
 

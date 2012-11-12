@@ -10,7 +10,7 @@
 		<input type="file" name="logo">
 		 
 		<label>Nombre:</label>
-		<input type="text" name="nombre">
+		<input type="text" name="name">
 		 
 		<input type="submit">
 	</form>
@@ -22,9 +22,9 @@
 			$('form').submit(function(e){
 				var data = new FormData();
 				data.append('logo', $('form [name = logo]')[0].files[0]);
-				data.append('nombre', $('form [name = nombre]').val())
+				data.append('name', $('form [name = name]').val())
 				$.ajax({
-					url: 'api/rest/equipos',
+					url: 'api/rest/teams',
 					data: data,
 					processData: false,
 					contentType: false,

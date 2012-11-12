@@ -1,4 +1,4 @@
-package mx.com.apestudio.gwt.eltorneo.client.modulos;
+package mx.com.apestudio.gwt.eltorneo.client.modules;
 
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
@@ -12,62 +12,65 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class ModuloRegistroEquipo extends VLayout implements ClickHandler {
+public class TeamRegistrationModule extends VLayout implements ClickHandler {
 	
-	public static class RegistroEquipoForm extends Widget{
+	public static class TeamRegistrationForm extends Widget{
 
 		private InputElement fileInputElement;
-		private InputElement nombreInputElement;
+		private InputElement nameInputElement;
 
-		public RegistroEquipoForm() {
+		public TeamRegistrationForm() {
 			FormElement formElement = Document.get().createFormElement();
 			formElement.setMethod("post");
 			formElement.setEnctype("multipart/form-data");
-			formElement.setAction("api/rest/equipos");
+			formElement.setAction("api/rest/teams");
 			fileInputElement = Document.get().createFileInputElement();
+			fileInputElement.setName("logo");
 			fileInputElement.setAttribute("multiple", "multiple");
 			formElement.appendChild(fileInputElement);
-			nombreInputElement = Document.get().createTextInputElement();
-			formElement.appendChild(nombreInputElement);
+			nameInputElement = Document.get().createTextInputElement();
+			nameInputElement.setName("name");
+			formElement.appendChild(nameInputElement);
 			setElement(formElement);
 		}
 		
 		public InputElement getFileInputElement(){
 			return fileInputElement;
 		}
-		public InputElement getNombreInputElement(){
-			return nombreInputElement;
+		public InputElement getNameInputElement(){
+			return nameInputElement;
 		}
 	}
 
-	private IButton btnEnviar;
-	private RegistroEquipoForm form;
-	public ModuloRegistroEquipo() {
+	private IButton btnSubmit;
+	private TeamRegistrationForm form;
+	
+	public TeamRegistrationModule() {
 		Canvas wrapper = new Canvas();
-		form = new RegistroEquipoForm();
+		form = new TeamRegistrationForm();
 		wrapper.addChild(form);
-		btnEnviar = new IButton("Enviar");
-		btnEnviar.addClickHandler(this);
-		setMembers(wrapper, btnEnviar);
+		btnSubmit = new IButton("Enviar");
+		btnSubmit.addClickHandler(this);
+		setMembers(wrapper, btnSubmit);
 	}
 
 	@Override
 	public void onClick(ClickEvent event) {
 		Widget source = (Widget) event.getSource();
-		if(btnEnviar == source){
+		if(btnSubmit == source){
 			submit();
 		}
 	}
 
 	private void submit() {
-		submitNative(form.getFileInputElement(),form.getNombreInputElement().getValue(), "api/rest/equipos");
+		submitNative(form.getFileInputElement(),form.getNameInputElement().getValue(), "api/rest/teams");
 	}
 	
-	private void equipoFormDataSent(String response){
+	private void teamFormDataSent(String response){
 		SC.say("Response from server: "+response);
 	}
 	
-	private native void submitNative(Element inputElement, String nombre, String url)/*-{
+	private native void submitNative(Element inputElement, String name, String url)/*-{
 		var modulo = this;
 		var input = inputElement, formdata=false;
 		if($wnd.FormData){
@@ -77,7 +80,7 @@ public class ModuloRegistroEquipo extends VLayout implements ClickHandler {
 				file = input.files[i];
 				formdata.append("logo", file);
 			}
-			formdata.append("nombre", nombre);
+			formdata.append("name", name);
 			$wnd.$.ajax({
 				url: url,
 				type: "POST",
@@ -85,7 +88,7 @@ public class ModuloRegistroEquipo extends VLayout implements ClickHandler {
 				processData: false,
 				contentType: false,
 				success: function (res) {
-						modulo.@mx.com.apestudio.gwt.eltorneo.client.modulos.ModuloRegistroEquipo::equipoFormDataSent(Ljava/lang/String;)(res);
+						modulo.@mx.com.apestudio.gwt.eltorneo.client.modules.TeamRegistrationModule::teamFormDataSent(Ljava/lang/String;)(res);
 				}
 			});
 		}

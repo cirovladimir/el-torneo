@@ -15,8 +15,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import mx.com.apestudio.gwt.eltorneo.server.modelo.DAO;
-import mx.com.apestudio.gwt.eltorneo.server.modelo.Equipo;
+import mx.com.apestudio.gwt.eltorneo.server.model.DAO;
+import mx.com.apestudio.gwt.eltorneo.server.model.Team;
 
 import org.apache.cxf.jaxrs.ext.MessageContext;
 import org.apache.cxf.jaxrs.ext.multipart.Multipart;
@@ -24,39 +24,39 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Path("/equipos")
-public class EquiposResource {
+@Path("/teams")
+public class TeamsResource {
 	@Resource
 	MessageContext context;
 	ObjectMapper om;
 	Logger log;
 	{
 		om = new ObjectMapper();
-		log = LoggerFactory.getLogger(EquiposResource.class);
+		log = LoggerFactory.getLogger(TeamsResource.class);
 	}
 
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response create(@Multipart("nombre") String nombre,
+	public Response create(@Multipart("name") String name,
 			@Multipart("logo") byte[] image) {
 		try {
-			Equipo equipo = new Equipo();
-			equipo.setNombre(nombre);
-			equipo.setLogo(image);
-			DAO.create(equipo);
+			Team team = new Team();
+			team.setName(name);
+			team.setLogo(image);
+			DAO.create(team);
 			Map<String, Object> data = new HashMap<String, Object>();
-			data.put("id", equipo.getId());
-			data.put("nombre", equipo.getNombre());
+			data.put("id", team.getId());
+			data.put("name", team.getName());
 			String context = this.context.getUriInfo().getBaseUri()
-					+ "/equipos/";
-			data.put("logo", new URL(context + equipo.getId() + "/logo.png"));
+					+ "/teams/";
+			data.put("logo", new URL(context + team.getId() + "/logo.png"));
 			return Response.ok(om.writeValueAsString(data),
 					MediaType.APPLICATION_JSON).build();
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			return Response
-					.ok("{\"response\": {\"status\": -1,\"data\": \"Hubo un problema al guardar los datos, intente más tarde\"} }",
+					.ok("{\"response\": {\"status\": -1,\"data\": \"There was a problem saving data, try later.\"} }",
 							MediaType.APPLICATION_JSON).build();
 		}
 	}
@@ -66,8 +66,8 @@ public class EquiposResource {
 	@Produces("image/png")
 	public Response getLogo(@PathParam("id") Long id) {
 		try {
-			Equipo equipo = DAO.retrieve(Equipo.class, id);
-			return Response.ok(equipo.getLogo().getBytes(), "image/png")
+			Team team = DAO.retrieve(Team.class, id);
+			return Response.ok(team.getLogo().getBytes(), "image/png")
 					.build();
 		} catch (Exception e) {
 			return Response.serverError().build();

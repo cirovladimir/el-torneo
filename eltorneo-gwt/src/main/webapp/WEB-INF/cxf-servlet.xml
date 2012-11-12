@@ -12,11 +12,11 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
 
 	<jaxrs:server id="api-rest" address="/rest">
 		<jaxrs:serviceBeans>
-			<ref bean="rest-modulos" />
-			<ref bean="rest-equipos" />
+			<ref bean="rest-modules" />
+			<ref bean="rest-teams" />
 		</jaxrs:serviceBeans>
 	</jaxrs:server>
 
-	<bean id="rest-modulos" class="mx.com.apestudio.gwt.eltorneo.server.api.rest.ModulosResource" />
-	<bean id="rest-equipos" class="mx.com.apestudio.gwt.eltorneo.server.api.rest.EquiposResource" />
+	<bean id="rest-modules" class="mx.com.apestudio.gwt.eltorneo.server.api.rest.ModulesResource" />
+	<bean id="rest-teams" class="mx.com.apestudio.gwt.eltorneo.server.api.rest.TeamsResource" />
 </beans>

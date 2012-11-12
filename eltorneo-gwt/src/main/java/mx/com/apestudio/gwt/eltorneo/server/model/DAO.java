@@ -1,4 +1,4 @@
-package mx.com.apestudio.gwt.eltorneo.server.modelo;
+package mx.com.apestudio.gwt.eltorneo.server.model;
 
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyFactory;
@@ -7,7 +7,7 @@ import com.googlecode.objectify.ObjectifyService;
 public class DAO {
 
 	static{
-		factory().register(Equipo.class);
+		factory().register(Team.class);
 	}
 	
 	public static ObjectifyFactory factory(){
@@ -18,12 +18,12 @@ public class DAO {
 		return factory().begin();
 	}
 	
-	public static Equipo create(Equipo equipo) {
-		ofy().put(equipo);
-		return equipo;
+	public static Team create(Team team) {
+		ofy().put(team);
+		return team;
 	}
 	
-	public static Equipo retrieve(Class<Equipo> type, Long id){
+	public static Team retrieve(Class<Team> type, Long id){
 		return ofy().get(type, id);
 	}
 	
