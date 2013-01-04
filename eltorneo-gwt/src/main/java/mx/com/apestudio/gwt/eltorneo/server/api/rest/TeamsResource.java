@@ -20,7 +20,6 @@ import mx.com.apestudio.gwt.eltorneo.server.model.Team;
 
 import org.apache.cxf.jaxrs.ext.MessageContext;
 import org.apache.cxf.jaxrs.ext.multipart.Multipart;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,12 +27,7 @@ import org.slf4j.LoggerFactory;
 public class TeamsResource {
 	@Resource
 	MessageContext context;
-	ObjectMapper om;
-	Logger log;
-	{
-		om = new ObjectMapper();
-		log = LoggerFactory.getLogger(TeamsResource.class);
-	}
+	final Logger log = LoggerFactory.getLogger(TeamsResource.class);
 
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -51,14 +45,14 @@ public class TeamsResource {
 			String context = this.context.getUriInfo().getBaseUri()
 					+ "/teams/";
 			data.put("logo", new URL(context + team.getId() + "/logo.png"));
-			return Response.ok(om.writeValueAsString(data),
+			return Response.ok(Jackson.om().writeValueAsString(data),
 					MediaType.APPLICATION_JSON).build();
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
-			return Response
-					.ok("{\"response\": {\"status\": -1,\"data\": \"There was a problem saving data, try later.\"} }",
-							MediaType.APPLICATION_JSON).build();
 		}
+		return Response
+				.ok("{\"response\": {\"status\": -1,\"data\": \"There was a problem saving data, try later.\"} }",
+						MediaType.APPLICATION_JSON).build();
 	}
 
 	@GET

@@ -8,6 +8,7 @@ public class DAO {
 
 	static{
 		factory().register(Team.class);
+		factory().register(User.class);
 	}
 	
 	public static ObjectifyFactory factory(){
@@ -25,6 +26,11 @@ public class DAO {
 	
 	public static Team retrieve(Class<Team> type, Long id){
 		return ofy().get(type, id);
+	}
+	
+	public static User create(User user){
+		ofy().put(user);
+		return user;
 	}
 	
 }
